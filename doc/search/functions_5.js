@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['nthelement',['nthElement',['../d7/d4d/classTree.html#a69d8889d72e52c4a7de21877e3500c5d',1,'Tree']]]
+  ['_7eredblacktree',['~RedBlackTree',['../d9/d5d/classRedBlackTree.html#ac38f0dbfc2edd59dc8b24b3d12b300f5',1,'RedBlackTree']]]
 ];

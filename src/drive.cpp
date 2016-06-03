@@ -15,18 +15,31 @@ using namespace std;
 ***********************************************/
 int main( void )
 {
-    RedBlackTree<int> myTree; //declare our tree
-    int value = 1; // value to hold user input for insertion
+    //! Tree instance
+    RedBlackTree<int> myTree;
 
-    cout << "Welcome... End this program by inputing a -99 sentinel value" << endl << endl;
+    //! Auxiliary variable
+    int input_value = 1;
 
-    while ( value != -99 ) // loop ends with a sentinel value of -99
+    cout << endl << "================================================================" << endl;
+    cout << "*** Gerador de arvore rubro-negra v0.1 ***" << endl;
+    cout << "================================================================" << endl << endl;
+
+    // Loops ends with value of -999
+    while ( input_value != -999 )
     {
-        cout << "Please enter a value" << endl;
-        cin >> value; // input the value
-        myTree.insert(value); // insert the value into the tree
-        myTree.print(); // print the tree
+        //! User input
+        cout << endl << "Informe um valor a ser inserido [-999 para finalizar]: ";
+        cin >> input_value;
+        cout << endl;
+
+        //! Call the class insertion method
+        myTree.insert(input_value);
+
+        //! Print the updated tree
+        myTree.print();
     }
 
+    /*! Main return */
     return 0;
 }

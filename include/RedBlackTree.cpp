@@ -143,7 +143,7 @@ void RedBlackTree<Comparable>::insert( Comparable newItem )
 	//! References the pseudo root
 	RBTreeNode<Comparable>* parentPtr = m_root;
 	RBTreeNode<Comparable>* grandPtr = m_root;
-	RBTreeNode<Comparable>* greatPtr = m_root
+	RBTreeNode<Comparable>* greatPtr = m_root;
 
 	//! Check if the referee node is different from the leaf
 	while ( nodePtr != theLeaf )
@@ -249,116 +249,172 @@ void RedBlackTree<Comparable>::rightRotate( RBTreeNode<Comparable>*& nodePtr, RB
 	temp->rChildPtr = nodePtr;
 }
 
-// Perform leftRotate
-// Rotate the nodePtr around its right child
+/*!
+ * Left rotation function
+ * rotates the node around its right child
+ *
+ * @param nodePtr 	=> the node itself (pointer)
+ * @param parentPtr => the parent node (pointer)
+ *
+ * @return => void
+*/
 template <class Comparable>
 void RedBlackTree<Comparable>::leftRotate( RBTreeNode<Comparable>*& nodePtr, RBTreeNode<Comparable>*& parentPtr )
 {
- 
- RBTreeNode<Comparable>* temp = nodePtr->rChildPtr; // temp var to hold the right child
- nodePtr->rChildPtr = temp->lChildPtr; // set right to left
- 
- if (parentPtr->rChildPtr == nodePtr) // if were dealing with the right child
- {
- parentPtr->rChildPtr = temp; // set it to right
- }
- else // if were dealing with the left child
- {
- parentPtr->lChildPtr = temp; // set it to the left
- }
- 
- temp->lChildPtr = nodePtr; // finish the rotation
- 
+	//! Temporaly variable to keep the right child
+	RBTreeNode<Comparable>* temp = nodePtr->rChildPtr;
+
+	//! Change the right child for the left's one
+	nodePtr->rChildPtr = temp->lChildPtr;
+
+	//! Check if it's the right child
+	if ( parentPtr->rChildPtr == nodePtr )
+	{
+		//! The temporaly variable receive the right child
+		parentPtr->rChildPtr = temp;
+	}
+	else // if were dealing with the left child
+	{
+		//! The temporaly variable receive the left child
+		parentPtr->lChildPtr = temp;
+	}
+
+	//! Finalize the rotation
+	temp->lChildPtr = nodePtr;
 }
- 
-// split a 4-node:
+
+/*!
+ * Split function
+ * splits a 4_node
+ *
+ * @param nodePtr 	=> the node itself 	(pointer)
+ * @param parentPtr => the parent node 	(pointer)
+ * @param grandPtr => the grandpa node 	(pointer)
+ * @param greatPtr => the great node 	(pointer)
+ *
+ * @return => void
+*/
 template <class Comparable>
-void RedBlackTree<Comparable>::split (  RBTreeNode<Comparable>* nodePtr,
- RBTreeNode<Comparable>* parentPtr,
- RBTreeNode<Comparable>* grandPtr,
- RBTreeNode<Comparable>* greatPtr )
+void RedBlackTree<Comparable>::split ( RBTreeNode<Comparable>* nodePtr, RBTreeNode<Comparable>* parentPtr,
+ 									   RBTreeNode<Comparable>* grandPtr, RBTreeNode<Comparable>* greatPtr )
 {
- 
- nodePtr->rChildPtr->color = RBTreeNode<Comparable>::Black; // recolor these as black
- nodePtr->lChildPtr->color = RBTreeNode<Comparable>::Black;
- 
- if (parentPtr->color == RBTreeNode<Comparable>::Black) // if a 2 node
- {
- nodePtr->color = RBTreeNode<Comparable>::Red; // recolor
- }
- else
- {
- if (parentPtr->lChildPtr->color != parentPtr->rChildPtr->color) //if colors are different
- {
- nodePtr->color = RBTreeNode<Comparable>::Red; // set to RBTreeNode<Comparable>::Red
- }
- else if ((parentPtr->lChildPtr == nodePtr) && (grandPtr->lChildPtr == parentPtr)) // if nodePtr is left child of its parent and
- {                                                                            // parentPtr is left child of its parent
- rightRotate(grandPtr, greatPtr); // rotate
- 
- swapColor(nodePtr, parentPtr, grandPtr); // swap the colors of nodePtr, parentPtr, and grandPtr
- }
- else if ((parentPtr->lChildPtr == nodePtr) && (grandPtr->rChildPtr == parentPtr))
- {
- rightRotate(parentPtr, grandPtr); // rotate
- leftRotate(grandPtr, greatPtr);
- 
- swapColor(nodePtr, parentPtr, grandPtr); // swap the colors of nodePtr, parentPtr, and grandPtr
- }
- else if ((parentPtr->rChildPtr == nodePtr) && (grandPtr->lChildPtr == parentPtr))
- {
- leftRotate(parentPtr, grandPtr); // rotate
- rightRotate(grandPtr, greatPtr);
- 
- swapColor(nodePtr, parentPtr, grandPtr); // swap the colors of nodePtr, parentPtr, and grandPtr
- }
- else if ((parentPtr->rChildPtr == nodePtr) && (grandPtr->rChildPtr == parentPtr))
- {
- leftRotate(grandPtr, greatPtr); // rotate
- 
- swapColor(nodePtr, parentPtr, grandPtr); // swap the colors of nodePtr, parentPtr, and grandPtr
- }
- }
- 
+	//! Change the color to black
+	nodePtr->rChildPtr->color = RBTreeNode<Comparable>::Black;
+	nodePtr->lChildPtr->color = RBTreeNode<Comparable>::Black;
+
+	//! Check if it's a 2_node
+	if ( parentPtr->color == RBTreeNode<Comparable>::Black )
+	{
+		//! Change the color to red
+		nodePtr->color = RBTreeNode<Comparable>::Red;
+	}
+	else
+	{
+		//! Check if the colors are different
+		if ( parentPtr->lChildPtr->color != parentPtr->rChildPtr->color )
+		{
+			// Change the color to red
+			nodePtr->color = RBTreeNode<Comparable>::Red;
+		}
+		//! If nodePtr is left child of its parent and parentPtr is left child of its parent
+		else if ( (parentPtr->lChildPtr == nodePtr) && (grandPtr->lChildPtr == parentPtr) ) 
+		{
+			rightRotate(grandPtr, greatPtr); // rotate
+
+			swapColor(nodePtr, parentPtr, grandPtr); // swap the colors of nodePtr, parentPtr, and grandPtr
+		}
+		else if ( (parentPtr->lChildPtr == nodePtr) && (grandPtr->rChildPtr == parentPtr) )
+		{
+			rightRotate(parentPtr, grandPtr); // rotate
+			leftRotate(grandPtr, greatPtr);
+
+			swapColor(nodePtr, parentPtr, grandPtr); // swap the colors of nodePtr, parentPtr, and grandPtr
+		}
+		else if ( (parentPtr->rChildPtr == nodePtr) && (grandPtr->lChildPtr == parentPtr) )
+		{
+			leftRotate(parentPtr, grandPtr); // rotate
+			rightRotate(grandPtr, greatPtr);
+
+			swapColor(nodePtr, parentPtr, grandPtr); // swap the colors of nodePtr, parentPtr, and grandPtr
+		}
+		else if ( (parentPtr->rChildPtr == nodePtr) && (grandPtr->rChildPtr == parentPtr) )
+		{
+			leftRotate(grandPtr, greatPtr); // rotate
+
+			swapColor(nodePtr, parentPtr, grandPtr); // swap the colors of nodePtr, parentPtr, and grandPtr
+		}
+	}
 }
- 
+
+/*!
+ * Clone function
+ *
+ * @param nodePtr 	=> the node itself 	(pointer)
+ *
+ * @return => void
+*/
 template <class Comparable>
-RBTreeNode<Comparable> *
-RedBlackTree<Comparable>::clone( RBTreeNode<Comparable> * nodePtr ) const
-{
- 
- if ( nodePtr == nodePtr->lChildPtr )  // if points to special leaf node
- return theLeaf;
- else
- return new RBTreeNode<Comparable>( nodePtr->value, clone( nodePtr->lChildPtr ), clone( nodePtr->rChildPtr ), nodePtr->color); // recursive function calls
- 
+RBTreeNode<Comparable> * RedBlackTree<Comparable>::clone( RBTreeNode<Comparable> * nodePtr ) const
+{ 
+	//! If points to special leaf node
+	if ( nodePtr == nodePtr->lChildPtr )
+		return theLeaf;
+	else
+		return new RBTreeNode<Comparable>( nodePtr->value, clone( nodePtr->lChildPtr ), clone( nodePtr->rChildPtr ), nodePtr->color); // recursive function calls
 }
- 
+
+/*!
+ * Function to release the allocated memory
+ *
+ * @param nodePtr 	=> the node itself 	(pointer)
+ *
+ * @return => void
+*/
 template <class Comparable>
 void RedBlackTree<Comparable>::reclaimMemory( RBTreeNode<Comparable> *nodePtr ) const
 {
- 
- if ( nodePtr != theLeaf ) // if not the leaf
- {
- reclaimMemory(nodePtr->lChildPtr); // destroy left subtree
- reclaimMemory(nodePtr->rChildPtr); // destroy right subtree
- delete nodePtr; // destroy the node
- }
- 
+	//! Check if it's the leaf node
+	if ( nodePtr != theLeaf )
+	{
+		//! Realease the left subtree memory
+		reclaimMemory(nodePtr->lChildPtr);
+
+		//! Realease the right subtree memory
+		reclaimMemory(nodePtr->rChildPtr);
+
+		//! Delete the node
+		delete nodePtr;
+	}
 }
- 
-// print the tree rooted at nodePtr
+
+/*!
+ * Print function
+ * prints the tree from nodePtr
+ *
+ * @param nodePtr 	=> the node itself 	(pointer)
+ * @param level		=> the tree's depth
+ *
+ * @return => void
+*/
 template <class Comparable>
 void RedBlackTree<Comparable>::print( RBTreeNode<Comparable> *nodePtr, int level ) const
 {
- 
- if ( nodePtr != theLeaf )
- {
- print( nodePtr->rChildPtr, level+1 );
- for( int i=0; i<level; i++ )
- cout << "    ";
- cout << ((nodePtr->color==RBTreeNode<Comparable>::Black) ? "b[" : "r[")
- << nodePtr->value << "]" << endl;
- print( nodePtr->lChildPtr, level+1 );
- }
+	//! Check if the node is not the leaf
+	if ( nodePtr != theLeaf )
+	{
+		//! Call the print function recursively
+		print( nodePtr->rChildPtr, (level + 1) );
+
+		//! Print blank spaces accordingly to the depth
+		for ( int i = 0; i < level; i++ )
+		{
+			cout << "    ";
+		}
+
+		//! Print the node
+		cout << ((nodePtr->color==RBTreeNode<Comparable>::Black) ? "b[" : "r[") << nodePtr->value << "]" << endl;
+
+		//! Call the print function recursively
+		print( nodePtr->lChildPtr, level+1 );
+	}
 }
