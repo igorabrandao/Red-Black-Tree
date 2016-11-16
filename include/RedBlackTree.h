@@ -5,18 +5,18 @@
         AUTHORS.....: Igor A. Brandão
         CONTRIBUTORS: Igor A. Brandão
         LOCATION....: IMD/UFRN.
-        SATARTED ON.: MAY/2016
+        SATARTED ON.: NOV/2016
         CHANGES.....: Structure and functions implemented.
 
         TO COMPILE..: Use makefile.
         OBS.........: Part of the EDB2 Project.
 
-        LAST UPDATE.: May 29th, 2016.
-        LAST UPDATE.: May 30th, 2016.
-        LAST UPDATE.: May 31st, 2016.
-        LAST UPDATE.: Jun  1st, 2016.
-        LAST UPDATE.: Jun  2nd, 2016.
-        LAST UPDATE.: Jun  3th, 2016.
+        LAST UPDATE.: Nov 05th, 2016.
+        LAST UPDATE.: Nov 07th, 2016.
+        LAST UPDATE.: Nov 09th, 2016.
+        LAST UPDATE.: Nov 10th, 2016.
+        LAST UPDATE.: Nov 14th, 2016.
+        LAST UPDATE.: Nov 16th, 2016.
     </PRE>
 */
 
@@ -62,15 +62,17 @@ class RBTreeNode
     friend class RedBlackTree<Comparable>;
 };
 
-// ******************PUBLIC OPERATIONS*********************
-// RedBlackTree( void )                             --> Class constructor
-// RedBlackTree( const RedBlackTree<Comparable>& )  --> Copy constructor
-// const RedBlackTree<Comparable>& operator         --> Assignment operator
-// ~RedBlackTree()                                  --> Class destructor
-// insert( Comparable newItem )                     --> Insertion function
-// void print( void ) const                         --> Print function
+// ************************************PUBLIC OPERATIONS***************************************
+// RedBlackTree( void )                                         --> Class constructor
+// RedBlackTree( const RedBlackTree<Comparable>& )              --> Copy constructor
+// const RedBlackTree<Comparable>& operator                     --> Assignment operator
+// ~RedBlackTree()                                              --> Class destructor
+// insert( Comparable newNode )                                 --> Insertion function
+// void remove( Comparable node );                              --> Remove function
+// const RedBlackTree<Comparable>& search( Comparable node );   --> Search function
+// void print( void ) const                                     --> Print function
 
-// ***********************ERRORS****************************
+// *****************************************ERRORS**********************************************
 // std::bad_alloc thrown if needed.
 
 /*! The red black tree class itself */
@@ -95,7 +97,13 @@ class RedBlackTree
         ~RedBlackTree();
 
         /*! Red-black tree's insertion function. Could throws a bad_alloc exception if no enough space */
-        void insert( Comparable newItem );
+        void insert( Comparable newNode );
+
+        /*! Red-black tree's remove function. */
+        void remove( Comparable node );
+
+        /*! Red-black tree's search function. */
+        const Comparable search( Comparable node );
 
         /*! Print all the tree's nodes */
         void print( void ) const;
@@ -148,7 +156,8 @@ class RedBlackTree
             /*! Basic members */
             RBTreeNode<Comparable>* theLeaf;    //!< actual leaf node
             RBTreeNode<Comparable>* m_root;     //!< pointer to pseudo root
-            RBTreeNode<Comparable>* nullNode;
+            RBTreeNode<Comparable>* nil;
+            const Comparable ITEM_NOT_FOUND = 0;
 };
 
 #include "RedBlackTree.cpp"

@@ -22,7 +22,7 @@ int main( void )
     int input_value = 1;
 
     cout << endl << "================================================================" << endl;
-    cout << "*** Gerador de arvore rubro-negra v0.1 ***" << endl;
+    cout << "*** Gerador de arvore rubro-negra v0.25 ***" << endl;
     cout << "================================================================" << endl << endl;
 
     // Loops ends with value of -999
@@ -39,6 +39,8 @@ int main( void )
         //! Print the updated tree
         myTree.print();
     }
+
+    cout << endl << "Resultado da busca: " << myTree.search(5) << endl;
 
     /*! Main return */
     return 0;

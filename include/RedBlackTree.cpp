@@ -74,11 +74,11 @@ void RedBlackTree<Comparable>::swapColor( RBTreeNode<Comparable>*& nodePtr, RBTr
 template <class Comparable>
 RedBlackTree<Comparable>::RedBlackTree( const RedBlackTree<Comparable>& old )
 {
-	nullNode = new RBTreeNode<Comparable>; // new node for the leaf
-	nullNode->lChildPtr = nullNode->rChildPtr = nullNode;
+	nil = new RBTreeNode<Comparable>; // new node for the leaf
+	nil->lChildPtr = nil->rChildPtr = nil;
 
 	m_root = new RBTreeNode<Comparable>; // create the new node
-	m_root->lChildPtr = m_root->rChildPtr = nullNode;
+	m_root->lChildPtr = m_root->rChildPtr = nil;
 	*this = old; // set the new node to our old parameter
 }
 
@@ -130,12 +130,12 @@ RedBlackTree<Comparable>::~RedBlackTree()
  * inserts a new node in the red black tree
  * it throws a bad_alloc exception if no enough space
  *
- * @param newItem => the value to the new node
+ * @param newNode => the value to the new node
  *
  * @return => void
 */
 template <class Comparable>
-void RedBlackTree<Comparable>::insert( Comparable newItem )
+void RedBlackTree<Comparable>::insert( Comparable newNode )
 {
 	//! References the root
 	RBTreeNode<Comparable>* nodePtr = m_root->rChildPtr;
@@ -170,23 +170,23 @@ void RedBlackTree<Comparable>::insert( Comparable newItem )
 		parentPtr = nodePtr;
 
 		//! Check the new node value
-		if ( newItem <= parentPtr->value )
+		if ( newNode <= parentPtr->value )
 			nodePtr = nodePtr->lChildPtr; //! LEFT
 		else
 			nodePtr = nodePtr->rChildPtr; // RIGHT
 	}
 
 	//! Check the new node value
-	if ( newItem <= parentPtr->value )
+	if ( newNode <= parentPtr->value )
 	{
 		//! It's smaller, so place in the left
-		parentPtr->lChildPtr = new RBTreeNode<Comparable>(newItem, theLeaf, theLeaf, RBTreeNode<Comparable>::Black);
+		parentPtr->lChildPtr = new RBTreeNode<Comparable>(newNode, theLeaf, theLeaf, RBTreeNode<Comparable>::Black);
 		nodePtr = parentPtr->lChildPtr;
 	}
 	else
 	{
 		//! It's bigger, so place in the right
-		parentPtr->rChildPtr = new RBTreeNode<Comparable>(newItem, theLeaf, theLeaf, RBTreeNode<Comparable>::Black);
+		parentPtr->rChildPtr = new RBTreeNode<Comparable>(newNode, theLeaf, theLeaf, RBTreeNode<Comparable>::Black);
 		nodePtr = parentPtr->rChildPtr;
 	}
 
@@ -201,6 +201,66 @@ void RedBlackTree<Comparable>::insert( Comparable newItem )
 
 	//! Change the leaf color
 	theLeaf->color = RBTreeNode<Comparable>::Black;
+}
+
+/*!
+ * Remove function
+ * removes a new node in the red black tree
+ *
+ * @param node => node's value to be removed
+ *
+ * @return => void
+*/
+template <class Comparable>
+void RedBlackTree<Comparable>::remove( Comparable node )
+{
+	// TODO
+}
+
+/*!
+ * Search function
+ * search a new node in the red black tree
+ *
+ * @param node => node's value to be removed
+ *
+ * @return => void
+*/
+template <class Comparable>
+const Comparable RedBlackTree<Comparable>::search( Comparable node )
+{
+	//! Set the nil node as the search parameter
+	nil = new RBTreeNode<Comparable>; // new node for the leaf
+	nil->value = node;
+
+    //! References the root
+	RBTreeNode<Comparable>* nodePtr = m_root->rChildPtr;
+
+	//! Check if the referee node is different from the leaf
+	while ( nodePtr != theLeaf )
+	{
+		//! Searched node is smaller than current node
+        if ( node < nodePtr->value )
+        {
+            nodePtr = nodePtr->lChildPtr;
+        }
+        //! Searched node is bigger than current node
+        else if ( nodePtr->value < node )
+        {
+            nodePtr = nodePtr->rChildPtr;
+        }
+        //! Current node is different from the searched
+        else if ( nodePtr != nil )
+        {
+            return nodePtr->value;
+        }
+        //! Not found
+        else
+        {
+            return ITEM_NOT_FOUND;
+        }
+    }
+
+    return ITEM_NOT_FOUND;
 }
 
 /*!
