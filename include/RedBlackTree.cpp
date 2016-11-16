@@ -214,7 +214,16 @@ void RedBlackTree<Comparable>::insert( Comparable newNode )
 template <class Comparable>
 void RedBlackTree<Comparable>::remove( Comparable node )
 {
-	// TODO
+	//! Temp node
+	RBTreeNode<Comparable>* temp = new RBTreeNode<Comparable>;
+
+    //! References the root (left)
+	RBTreeNode<Comparable>* nodePtr = m_root->lChildPtr;
+
+	//! References the pseudo root
+	RBTreeNode<Comparable>* parentPtr = m_root;
+	RBTreeNode<Comparable>* grandPtr = m_root;
+	RBTreeNode<Comparable>* greatPtr = m_root;
 }
 
 /*!
